@@ -1,16 +1,12 @@
 import 'package:z2hhealthcare/controller/order_controller.dart';
-
 import '../../controller/auth_controller.dart';
 import '../../views/profile/profile_edit.dart';
 import '../../views/profile/profile_index.dart';
-
-
 import '../../controller/profile_controller.dart';
-
-
 import '../../consts/consts.dart';
 import '../cart/cart.dart';
 import '../orders/my_orders.dart';
+import '../products/products_wishlist.dart';
 import '../widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -107,10 +103,15 @@ class ProfileScreen extends StatelessWidget {
                             title: 'In Your Cart',
                             width: context.screenWidth / 3.4),
                       ),
-                      detailsCard(
-                          count: orderController.wishList.value.toString(),
-                          title: 'Wish List',
-                          width: context.screenWidth / 3.4),
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductsWishlist()));
+                        },
+                        child: detailsCard(
+                            count: orderController.wishList.value.toString(),
+                            title: 'Wish List',
+                            width: context.screenWidth / 3.4),
+                      ),
                       InkWell(
                         onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>const MyOrders()));
@@ -167,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
                         .make()
                         .box
                         .make().onTap((){
-
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductsWishlist()));
                         }),
 
                          ListTile(
@@ -223,8 +224,8 @@ class ProfileScreen extends StatelessWidget {
                         .white
                         .rounded
                         .shadowSm
-                        .margin(EdgeInsets.all(12))
-                        .padding(EdgeInsets.symmetric(horizontal: 16))
+                        .margin(const EdgeInsets.all(12))
+                        .padding(const EdgeInsets.symmetric(horizontal: 16))
                         .make()
                         .box
                         .make().onTap((){

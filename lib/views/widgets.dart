@@ -2,15 +2,30 @@
 
 import 'package:flutter/services.dart';
 import 'package:z2hhealthcare/controller/auth_controller.dart';
+import 'package:z2hhealthcare/views/authscreen/change_password.dart';
+import 'package:z2hhealthcare/views/authscreen/update_profile.dart';
 import 'package:z2hhealthcare/views/biz/dash_board.dart';
+import 'package:z2hhealthcare/views/biz/team/level_team.dart';
+import 'package:z2hhealthcare/views/biz/team/referral_link.dart';
+import 'package:z2hhealthcare/views/biz/team/referral_team.dart';
+import 'package:z2hhealthcare/views/biz/wallet/deposit.dart';
+import 'package:z2hhealthcare/views/cart/cart.dart';
+import 'package:z2hhealthcare/views/home/home_page.dart';
 
 import '../consts/consts.dart';
 import '../controller/product_controller.dart';
 import '../controller/profile_controller.dart';
+import 'authscreen/update_account.dart';
 import 'biz/activate.dart';
 import 'biz/apply_business.dart';
+import 'biz/history/deposit_history.dart';
+import 'biz/history/level_income.dart';
+import 'biz/history/withdraw_history.dart';
 import 'biz/register_from_panel.dart';
+import 'biz/team/level.dart';
 import 'biz/wallet/withdraw.dart';
+import 'home/home.dart';
+import 'orders/my_orders.dart';
 import 'products/product_view_single.dart';
 
 Widget drawerCardMember(context) {
@@ -41,7 +56,13 @@ Widget drawerCardMember(context) {
             color: primaryColor,
           ),
         ),
-
+        ListTile(
+          leading:const Icon(Icons.home),
+          title:const Text('Home'),
+          onTap: () async{
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> Home()));
+          },
+        ),
 
 controller.isBusiness.value=='0'? ListTile(
   leading:const Icon(Icons.add_business),
@@ -77,51 +98,53 @@ controller.isBusiness.value=='0'? ListTile(
             ListTile(
               title:const Text('Withdraw History'),
               onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const WithdrawHistory()));
               },
             ),
             ListTile(
               title:const Text('Deposit'),
               onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Deposit()));
               },
             ),
             ListTile(
               title:const Text('Deposit History'),
               onTap: () {
-
-              },
-            ),
-            ListTile(
-              title:const Text('Referral Team'),
-              onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const DepositHistory()));
               },
             ),
             ListTile(
               title:const Text('Level'),
               onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Level()));
+              },
+            ),
+            ListTile(
+              title:const Text('Referral Team'),
+              onTap: () {  Navigator.push(context, MaterialPageRoute(builder: (context)=>const ReferralTeam()));
 
               },
             ),
+
             ListTile(
               title:const Text('Level Team'),
               onTap: () {
-
-              },
-            ),
-            ListTile(
-              title:const Text('Level Income'),
-              onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const LevelTeam()));
               },
             ),
             ListTile(
               title:const Text('Referral Link'),
               onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const ReferralLink()));
               },
             ),
+            ListTile(
+              title:const Text('Level Income'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const LevelIncome()));
+              },
+            ),
+
           ],
         ),
 
@@ -129,21 +152,21 @@ controller.isBusiness.value=='0'? ListTile(
           leading:const Icon(Icons.shopping_bag_rounded),
           title:const Text('My Orders'),
           onTap: () async{
-
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>const MyOrders()));
           },
         ),
         ListTile(
           leading:const Icon(Icons.favorite),
           title:const Text('Wishlist'),
           onTap: () async{
-
+           // Navigator.push(context, MaterialPageRoute(builder: (context)=>const Withdraw()));
           },
         ),
         ListTile(
           leading:const Icon(Icons.shopping_cart),
           title:const Text('Cart'),
           onTap: () async{
-
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>const Cart()));
           },
         ),
         ExpansionTile(
@@ -154,19 +177,19 @@ controller.isBusiness.value=='0'? ListTile(
             ListTile(
               title:const Text('Update Profile'),
               onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const UpdateProfile()));
               },
             ),
             ListTile(
               title:const Text('Update Account'),
               onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const UpdateAccount()));
               },
             ),
             ListTile(
               title:const Text('Change Password'),
               onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const ChangePassword()));
               },
             ),
 
@@ -185,12 +208,12 @@ controller.isBusiness.value=='0'? ListTile(
   );
 }
 
-Widget specialProducts(){
+Widget specialProducts(type){
    var controller = Get.put(ProductController());
   return       Expanded(
                 child: SingleChildScrollView(
                   child: FutureBuilder(
-                    future: controller.getProducts(),
+                    future: controller.getProducts(type),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return SizedBox( width: context.width,height: 200, child: Center(child: CircularProgressIndicator(color: secondColor,)));
@@ -281,12 +304,12 @@ Widget specialProducts(){
               );
 }
 
-Widget allProducts(){
+Widget allProducts(type){
   var controller = Get.put(ProductController());
   return  SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: FutureBuilder(
-  future: controller.getProducts(),
+  future: controller.getProducts(type),
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return SizedBox( width: context.width,height: 200, child: Center(child: CircularProgressIndicator(color: secondColor,)));

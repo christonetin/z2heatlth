@@ -3,6 +3,7 @@ import 'consts.dart';
 const appname = "Z2H HealthCart";
 const appversion = "Version 1.0.0";
 const credits = "@ChristoNet";
+const urlLink = "z2hhealthcare.com";
 
 //URL
 // String url = 'http://10.0.2.2/product/ecom/z2hhealthcare/app_api/';
@@ -18,7 +19,7 @@ const regular = "RobotoMono";
 const semibold = "sans_semibold";
 const bold = "sans_bold";
 const currency ="Rs";
-Icon myIcon = Icon(Icons.attach_money);
+Icon myIcon =const Icon(Icons.attach_money);
 
 //Images
 const icSplashBg = "assets/splash_login_registration_background_image.png";

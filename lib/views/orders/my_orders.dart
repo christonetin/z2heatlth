@@ -1,7 +1,6 @@
-import 'package:z2hhealthcare/controller/order_controller.dart';
+import '../../controller/order_controller.dart';
 
 import '../../consts/consts.dart';
-import '../../controller/cart_controller.dart';
 import '../widgets.dart';
 
 class MyOrders extends StatelessWidget {

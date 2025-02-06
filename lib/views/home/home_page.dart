@@ -1,3 +1,6 @@
+
+import 'package:z2hhealthcare/controller/app_controller.dart';
+
 import '../../views/products/product_view_single.dart';
 import '../../controller/product_controller.dart';
 import '../../consts/consts.dart';
@@ -8,6 +11,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProductController());
+    var appController = Get.put(AppController());
+    appController.getBanners();
     return  Scaffold(
       drawer: drawerCardMember(context),
        appBar:  AppBar(
@@ -30,37 +35,43 @@ class HomePage extends StatelessWidget {
         
         ),
       body: Container(
-        
+
         color: whiteColor,
         child: SafeArea(
-          
+
            child: Column(
         children: [
           Expanded(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(children: [
-         SizedBox(
-          height: 170,
-           child: VxSwiper.builder(
-                              aspectRatio: 16 / 9,
-                              autoPlay: true,
-                              height: 150,
-                              enlargeCenterPage: true,
-                              itemCount: slidersList.length,
-                              itemBuilder: (context, index) {
-                                return Image.asset(
-                                  slidersList[index],
-                                  fit: BoxFit.fill,
-                                )
-                                    .box
-                                    .rounded.shadow
-                                    .clip(Clip.antiAlias)
-                                    .margin(const EdgeInsets.symmetric(horizontal: 8))
-                                    .make();
-                              }),
-         ),
-        10.heightBox,
+            20.heightBox,
+            SizedBox(
+              height: 170,
+              child: VxSwiper.builder(
+                  aspectRatio: 16 / 9,
+                  autoPlay: true,
+                  height: 200,
+                  enlargeCenterPage: true,
+                  itemCount:appController. bannerList.length,
+                  itemBuilder: (context, index) {
+
+                    var row=appController. bannerList[index];
+
+
+                    return Image.network(
+                      "$imgUrl/banners/${row['url']}",
+                      fit: BoxFit.fill,
+                    )
+                        .box
+                        .rounded
+                        .shadow
+                        .clip(Clip.antiAlias)
+                        .margin(const EdgeInsets.symmetric(horizontal: 8))
+                        .make();
+                  }),
+            ),
+            20.heightBox,
          Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: List.generate(
@@ -102,13 +113,13 @@ class HomePage extends StatelessWidget {
                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductsAll(passValue:  '1')));
                                         }),
                           ],),
-                         
-      
+
+
                                 10.heightBox,
                                 SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: FutureBuilder(
-        future: controller.getProducts(),
+        future: controller.getProducts('is_new'),
         builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return SizedBox( width: context.width,height: 200, child: Center(child: CircularProgressIndicator(color: secondColor,)));
@@ -122,10 +133,8 @@ class HomePage extends StatelessWidget {
             (index) {
               // Get the product name, ensuring it's not null
               String productName = featureData[index]['pro_name'] ?? '';
-      
               // Truncate the product name to 20 characters
               String truncatedName = productName.length > 20 ? productName.substring(0, 16) + '...' : productName;
-      
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -141,17 +150,26 @@ class HomePage extends StatelessWidget {
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle favorite action here
-                            print('Favorite tapped for ${featureData[index]['pro_name']}');
-                          },
-                          child:const Icon(
-                            Icons.favorite_border, // Use the heart icon
-                            color: Colors.red, // Heart color
-                            size: 24, // Size of the icon
+                        child:  GestureDetector(
+                            onTap: () async{
+
+                             await controller.wishListSubmit(featureData[index]['pro_code']);
+                            },
+                            child:  FutureBuilder<String>(
+                                future: controller.getWishListStatus(featureData[index]['pro_code']),
+                                  builder: (context, snapshot){
+                                    IconData favorite = snapshot.data=='true'?Icons.favorite:Icons.favorite_border;
+                                  return  Icon(
+                                      favorite, // Use the heart icon
+                                      color: Colors.red, // Heart color
+                                      size: 24, // Size of the icon
+                                    );
+
+                                  }
+                              ),
+
                           ),
-                        ),
+
                       ),
                     ],
                   ),
@@ -167,9 +185,9 @@ class HomePage extends StatelessWidget {
                     priceText(featureData[index]['price']),
       8.widthBox,
       mrpText(featureData[index]['mrp']),
-         
+
                  ],),
-                  
+
                 ],
               )
                   .box
@@ -216,9 +234,9 @@ class HomePage extends StatelessWidget {
                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductsAll(passValue:  '2')));
                                         }),
                           ],),
-                      
+
                            10.heightBox,
-                           allProducts(),
+                           allProducts('is_today'),
                             10.heightBox,
                         ],
                       ),
@@ -246,9 +264,9 @@ class HomePage extends StatelessWidget {
                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductsAll(passValue:  '3')));
                                         }),
                           ],),
-                      
+
                            10.heightBox,
-                           allProducts(),
+                           allProducts('is_best'),
                             10.heightBox,
                         ],
                       ),
@@ -276,20 +294,20 @@ class HomePage extends StatelessWidget {
                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductsAll(passValue:  '4')));
                                         }),
                           ],),
-                      
+
                            10.heightBox,
-                           allProducts(),
+                           allProducts('is_offer'),
                             10.heightBox,
                         ],
                       ),
                     ),
-      
+
                                   10.heightBox,
-                               
+
           ],),
         ),
           ),
-                
+
         ],
            ),
         ),

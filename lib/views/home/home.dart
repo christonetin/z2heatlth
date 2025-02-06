@@ -1,7 +1,7 @@
 
 import '../../views/products/products_all.dart';
 
-import '../../controller/home_controller.dart';
+import '../../controller/app_controller.dart';
 import '../widgets.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -15,7 +15,7 @@ import '../profile/profile_screen.dart';
 // ignore: must_be_immutable
 class Home extends StatelessWidget {
    Home({super.key});
-     var controller = Get.put(HomeController());
+     var controller = Get.put(AppController());
   @override
   Widget build(BuildContext context) {
 
@@ -44,13 +44,13 @@ class Home extends StatelessWidget {
             children: [
               Obx(
                 () => Expanded(
-                  child: navBody.elementAt(controller.curruntNavIndex.value),
+                  child: navBody.elementAt(controller.currentNavIndex.value),
                 ),
               ),
             ],
           ),
           bottomNavigationBar: CurvedNavigationBar(items: navbarItem , onTap: (value){
-              controller.curruntNavIndex.value = value;
+              controller.currentNavIndex.value = value;
           },
           backgroundColor: primaryColor,
           height: 50,

@@ -29,7 +29,7 @@ class Withdraw extends StatelessWidget {
               "Withdraw".text.color(primaryColor).size(20).bold.make(),
               20.heightBox,
               TextField(
-                controller: profileController.wallatController.value,
+                controller: profileController.walletController.value,
                 readOnly: true,
                 decoration: const InputDecoration(
                   border:  OutlineInputBorder(),
@@ -88,7 +88,7 @@ class Withdraw extends StatelessWidget {
                   color: primaryColor,
                   onPress: () async {
 
-                    await controller.withdraw(context, profileController.wallatController.value.text);
+                    await controller.withdraw(context, profileController.walletController.value.text);
                   },
                   textColor: whiteColor,
                   title: 'Withdraw').box.width(context.screenWidth - 50).make(),

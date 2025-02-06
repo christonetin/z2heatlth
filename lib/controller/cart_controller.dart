@@ -8,6 +8,8 @@ class CartController extends GetxController {
  
   var isLoading = false.obs;
   var quantity = 1.obs;
+
+
       
   Map<String, dynamic>? data;
   @override
@@ -18,6 +20,8 @@ class CartController extends GetxController {
      cartQtyPriceTotal();
    
   }
+
+
 
     RxString totalPrice = ''.obs,totalQty = ''.obs,discount = ''.obs, mrpAndQty= ''.obs;
   Future<void> cartQtyPriceTotal() async {

@@ -303,7 +303,7 @@ class ProductViewSingle extends StatelessWidget {
                         ],),
                     
                          10.heightBox,
-                         allProducts(),
+                         allProducts('is_today'),
                           10.heightBox,
                       ],
                     ),
